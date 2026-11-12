@@ -1,0 +1,36 @@
+<div class="card mb-4">
+  <div class="card-header">Registrar Nuevo Movimiento</div>
+  <div class="card-body">
+    @if (mensajeError()) {
+      <div class="alert alert-danger">{{ mensajeError() }}</div>
+    }
+
+    <form (ngSubmit)="procesarFormulario()" class="row">
+      <div class="col">
+        <label for="tipo">Tipo de Movimiento</label>
+        <select id="tipo" name="tipo" [ngModel]="tipo()" (ngModelChange)="tipo.set($event)" required>
+          <option value="Recarga">Recarga (+)</option>
+          <option value="Gasto">Gasto (-)</option>
+        </select>
+      </div>
+
+      <div class="col">
+        <label for="monto">Monto (S/)</label>
+        <input
+          type="number"
+          id="monto"
+          name="monto"
+          step="0.01"
+          placeholder="Ej. 50.00"
+          [ngModel]="monto()"
+          (ngModelChange)="monto.set($event)"
+          required
+        />
+      </div>
+
+      <div class="col">
+        <button type="submit" class="btn-primary">Registrar</button>
+      </div>
+    </form>
+  </div>
+</div>

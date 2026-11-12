@@ -1,11 +1,45 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Movimiento } from './models/movimiento.model';
+import { NuevoMovimiento, NuevoMovimientoEvento } from './components/nuevo-movimiento/nuevo-movimiento';
 
 @Component({
-  imports: [],
   selector: 'app-root',
-  styleUrl: './app.css',
+  standalone: true,
+  imports: [CommonModule, NuevoMovimiento],
   templateUrl: './app.html',
+  styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('billetera-angular');
+  private readonly SALDO_INICIAL = 250.00;
+  private formHijo = viewChild(NuevoMovimiento);
+
+  saldo = signal<number>(this.SALDO_INICIAL);
+  movimientos = signal<Movimiento[]>([]);
+  mensajeExito = signal<string>('');
+
+  agregarMovimiento(evento: NuevoMovimientoEvento): void {
+    if (evento.tipo === 'Recarga') {
+      this.saldo.update(s => s + evento.monto);
+    } else {
+      this.saldo.update(s => s - evento.monto);
+    }
+
+    const nuevo: Movimiento = {
+      id: Date.now(),
+      tipo: evento.tipo,
+      monto: evento.monto,
+      fecha: new Date()
+    };
+
+    this.movimientos.update(lista => [nuevo, ...lista]);
+    this.mensajeExito.set(`Operación (${evento.tipo}) por S/ ${evento.monto.toFixed(2)} registrada con éxito.`);
+  }
+
+  reiniciarBilletera(): void {
+    this.saldo.set(this.SALDO_INICIAL);
+    this.movimientos.set([]);
+    this.mensajeExito.set('Billetera reiniciada correctamente al saldo inicial.');
+    this.formHijo()?.limpiarFormulario();
+  }
 }

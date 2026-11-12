@@ -1,59 +1,21 @@
-# BilleteraAngular
+# Billetera Digital - Caso 2 (Angular + Signals + Componentes)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.4.
+Aplicación SPA desarrollada con **Angular**, **TypeScript**, **Signals** y arquitectura modular basada en componentes padre e hijo (`input()`, `output()`, `viewChild()`, `@if` y `@for`).
 
-## Development server
+## Funcionalidades implementadas
+- Saldo inicial automático de **S/ 250.00** administrado de forma reactiva con **Angular Signals**.
+- Comunicación estructurada entre el componente padre (`App`) y el componente hijo (`NuevoMovimiento`).
+- Registro de **Recargas (+)** y **Gastos (-)** con cálculo en tiempo real y marca de hora.
+- Validación de montos mayores a cero y bloqueo de gastos cuando el saldo es insuficiente.
+- Botón independiente para reiniciar la billetera y limpiar el formulario.
 
-To start a local development server, run:
+## Requisitos y ejecución
+1. **Node.js (LTS)** y **Angular CLI**.
+2. Instalar dependencias (si es la primera vez):
+   `npm install`
+3. Ejecutar el servidor de desarrollo:
+   `ng serve -o`
+4. Abrir en el navegador: `http://localhost:4200/`
 
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Evidencias de funcionamiento
+Las capturas de pantalla de todas las pruebas (estado inicial, recarga, gasto, validaciones de error y reinicio) se encuentran en la carpeta EVIDENCIAS
