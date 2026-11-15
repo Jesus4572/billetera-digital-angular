@@ -1,4 +1,4 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, computed, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 export interface NuevoMovimientoEvento {
@@ -13,42 +13,68 @@ export interface NuevoMovimientoEvento {
   templateUrl: './nuevo-movimiento.html',
   styleUrl: './nuevo-movimiento.css'
 })
-export class NuevoMovimiento {
+export class NuevoMovimientoComponent {
   saldoActual = input.required<number>();
   registrarMovimiento = output<NuevoMovimientoEvento>();
   errorValidacion = output<void>();
 
   tipo = signal<'Recarga' | 'Gasto'>('Recarga');
   monto = signal<number | null>(null);
-  mensajeError = signal<string>('');
+  campoTocado = signal<boolean>(false);
+
+  mensajeValidacion = computed(() => {
+    const val = this.monto();
+    if (val === null || isNaN(val)) {
+      return this.campoTocado() ? 'Error: Debe ingresar un monto numérico válido.' : '';
+    }
+    if (val <= 0) {
+      return 'Error: El monto debe ser mayor a S/ 0.00.';
+    }
+    if (this.tipo() === 'Gasto' && val > this.saldoActual()) {
+      return `Error: Saldo insuficiente (máximo disponible: S/ ${this.saldoActual().toFixed(2)}).`;
+    }
+    return '';
+  });
+
+  formularioInvalido = computed(() => {
+    const val = this.monto();
+    if (val === null || isNaN(val) || val <= 0) return true;
+    if (this.tipo() === 'Gasto' && val > this.saldoActual()) return true;
+    return false;
+  });
+
+  onTipoChange(nuevoTipo: 'Recarga' | 'Gasto'): void {
+    this.tipo.set(nuevoTipo);
+    if (this.formularioInvalido() && this.campoTocado()) {
+      this.errorValidacion.emit();
+    }
+  }
+
+  onMontoChange(valor: number | null): void {
+    this.campoTocado.set(true);
+    this.monto.set(valor);
+    if (this.formularioInvalido()) {
+      this.errorValidacion.emit();
+    }
+  }
 
   procesarFormulario(): void {
-    const valorMonto = this.monto();
-    const tipoSeleccionado = this.tipo();
-
-    if (valorMonto === null || isNaN(valorMonto) || valorMonto <= 0) {
-      this.mensajeError.set('Error: El monto debe ser mayor a S/ 0.00.');
+    this.campoTocado.set(true);
+    if (this.formularioInvalido()) {
       this.errorValidacion.emit();
       return;
     }
 
-    if (tipoSeleccionado === 'Gasto' && valorMonto > this.saldoActual()) {
-      this.mensajeError.set('Error: Saldo insuficiente para realizar este gasto.');
-      this.errorValidacion.emit();
-      return;
-    }
-
-    this.mensajeError.set('');
     this.registrarMovimiento.emit({
-      tipo: tipoSeleccionado,
-      monto: valorMonto
+      tipo: this.tipo(),
+      monto: this.monto()!
     });
 
-    this.monto.set(null);
+    this.limpiarFormulario();
   }
 
   limpiarFormulario(): void {
-    this.mensajeError.set('');
+    this.campoTocado.set(false);
     this.monto.set(null);
     this.tipo.set('Recarga');
   }

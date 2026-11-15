@@ -1,35 +1,39 @@
-<div class="card mb-4">
-  <div class="card-header">Registrar Nuevo Movimiento</div>
+<div class="card shadow-sm mb-4">
+  <div class="card-header bg-white fw-bold">Registrar Nuevo Movimiento</div>
   <div class="card-body">
-    @if (mensajeError()) {
-      <div class="alert alert-danger">{{ mensajeError() }}</div>
+    @if (mensajeValidacion()) {
+      <div class="alert alert-danger py-2">{{ mensajeValidacion() }}</div>
     }
 
-    <form (ngSubmit)="procesarFormulario()" class="row">
-      <div class="col">
-        <label for="tipo">Tipo de Movimiento</label>
-        <select id="tipo" name="tipo" [ngModel]="tipo()" (ngModelChange)="tipo.set($event)" required>
+    <form (ngSubmit)="procesarFormulario()" class="row g-3">
+      <div class="col-md-5">
+        <label for="tipo" class="form-label">Tipo de Movimiento</label>
+        <select class="form-select" id="tipo" name="tipo" [ngModel]="tipo()" (ngModelChange)="onTipoChange($event)" required>
           <option value="Recarga">Recarga (+)</option>
           <option value="Gasto">Gasto (-)</option>
         </select>
       </div>
 
-      <div class="col">
-        <label for="monto">Monto (S/)</label>
+      <div class="col-md-4">
+        <label for="monto" class="form-label">Monto (S/)</label>
         <input
           type="number"
+          class="form-control"
           id="monto"
           name="monto"
           step="0.01"
           placeholder="Ej. 50.00"
           [ngModel]="monto()"
-          (ngModelChange)="monto.set($event)"
+          (ngModelChange)="onMontoChange($event)"
+          (blur)="campoTocado.set(true)"
           required
         />
       </div>
 
-      <div class="col">
-        <button type="submit" class="btn-primary">Registrar</button>
+      <div class="col-md-3 d-flex align-items-end">
+        <button type="submit" class="btn btn-primary w-100" [disabled]="formularioInvalido()">
+          Registrar
+        </button>
       </div>
     </form>
   </div>
