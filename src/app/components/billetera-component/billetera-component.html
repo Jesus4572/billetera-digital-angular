@@ -16,7 +16,7 @@
     </div>
   }
 
-  <!-- Componente Hijo -->
+  <!-- Componente Hijo conectado mediante input() y output() -->
   <app-nuevo-movimiento
     [saldoActual]="saldo()"
     (registrarMovimiento)="agregarMovimiento($event)"
@@ -30,7 +30,7 @@
     </button>
   </div>
 
-  <!-- Historial de movimientos -->
+  <!-- Historial de movimientos con @if y @for -->
   <div class="card shadow-sm">
     <div class="card-header bg-white fw-bold">Historial de Movimientos</div>
     <div class="card-body p-0">

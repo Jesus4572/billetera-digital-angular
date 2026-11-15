@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BilleteraComponent } from './components/billetera/billetera';
+import { BilleteraComponent } from './components/billetera-component/billetera-component';
 
 @Component({
   selector: 'app-root',

@@ -1,14 +1,14 @@
 import { Component, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Movimiento } from '../../models/movimiento.model';
-import { NuevoMovimientoComponent, NuevoMovimientoEvento } from '../nuevo-movimiento/nuevo-movimiento';
+import { NuevoMovimientoComponent, NuevoMovimientoEvento } from '../nuevo-movimiento-component/nuevo-movimiento-component';
 
 @Component({
   selector: 'app-billetera',
   standalone: true,
   imports: [CommonModule, NuevoMovimientoComponent],
-  templateUrl: './billetera.html',
-  styleUrl: './billetera.css'
+  templateUrl: './billetera-component.html',
+  styleUrl: './billetera-component.css'
 })
 export class BilleteraComponent {
   private readonly SALDO_INICIAL = 250.00;

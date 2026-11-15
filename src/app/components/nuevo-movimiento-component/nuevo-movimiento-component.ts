@@ -10,8 +10,8 @@ export interface NuevoMovimientoEvento {
   selector: 'app-nuevo-movimiento',
   standalone: true,
   imports: [FormsModule],
-  templateUrl: './nuevo-movimiento.html',
-  styleUrl: './nuevo-movimiento.css'
+  templateUrl: './nuevo-movimiento-component.html',
+  styleUrl: './nuevo-movimiento-component.css'
 })
 export class NuevoMovimientoComponent {
   saldoActual = input.required<number>();
